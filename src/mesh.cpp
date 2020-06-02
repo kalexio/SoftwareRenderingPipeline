@@ -6,6 +6,11 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 
 }
 
+Mesh::Mesh()
+{
+
+}
+
 Mesh::~Mesh()
 {
 
@@ -18,6 +23,6 @@ unsigned int Mesh::getIndicesCount() const
 
 Vertex& Mesh::getVertexAt(unsigned int i)
 {
-    return mVertices[i];
+    return mVertices[mIndices[i]];
 }
 

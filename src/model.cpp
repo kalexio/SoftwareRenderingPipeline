@@ -42,15 +42,20 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
+    const aiVector3D zero(0.0f, 0.0f, 0.0f);
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
         Vertex vertex;
 
         vertex.mPosition.x = mesh->mVertices[i].x;
+        //std::cout << mesh->mVertices[i].x;
         vertex.mPosition.y = mesh->mVertices[i].y;
         vertex.mPosition.z = mesh->mVertices[i].z;
+        vertex.mPosition.w = 1.0f;
         vertex.mNormal.x = mesh->mNormals[i].x;
+        //std::cout << " " << mesh->mNormals[i].x << std::endl;
         vertex.mNormal.y = mesh->mNormals[i].y;
         vertex.mNormal.z = mesh->mNormals[i].z;
+        vertex.mNormal.w = 0.0f;
 
         vertices.push_back(vertex);
     }
@@ -60,10 +65,12 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             indices.push_back(face.mIndices[j]);
+            //std::cout << " " << face.mIndices[j] << std::endl;
         }
     }
 
-    std::cout << "Vertices: " << indices.size() << std::endl;
+    //std::cout << "Elements: " << indices.size() << std::endl;
+    //std::cout << "different vertices: " << mesh->mNumVertices << std::endl;
 
     return Mesh(vertices, indices);
 }
@@ -73,7 +80,7 @@ unsigned int Model::getMeshesCount() const
     return mMeshes.size();
 }
 
-Mesh& Model::getMeshAt(unsigned int i)
+Mesh Model::getMeshAt(unsigned int i)
 {
     return mMeshes[i];
 }

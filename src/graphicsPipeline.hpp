@@ -1,19 +1,22 @@
 #pragma once
 
 #include "vertexShader.hpp"
-#include "primitiveAssembly.hpp"
+#include "primitiveAssembler.hpp"
 #include "rasterizer.hpp"
 #include "fragmentShader.hpp"
 #include "mesh.hpp"
+#include "framebuffer.hpp"
 
 class GraphicsPipeline {
 private:
-    IShader*           mVertexShader;
-    PrimitiveAssembly* mTriangle;
-    Rasterizer*        mRasterizer;
-    IShader*           mFragmentShader;
+    IShader*             mVertexShader;
+    PrimitiveAssembler*  mPrimitive;
+    Rasterizer*          mRasterizer;
+    IShader*             mFragmentShader;
+    Mesh                 mMesh;
 
-    void startVertexShader(Mesh& mesh);
+    void startVertexShader(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport);
+    void startPrimitiveAssembler();
     void startRasterizer();
     void startFragmentShader();
 
@@ -23,5 +26,8 @@ public:
 
     void configure();
     void setup();
-    void render(Mesh& mesh);
+    void render(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport);
+    void setMesh(Mesh mesh);
+
+    Framebuffer*         mFramebuffer;
 };

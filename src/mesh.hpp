@@ -11,9 +11,10 @@ private:
 
 public:
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    Mesh();
     ~Mesh();
 
     unsigned int getIndicesCount() const;
-    Vertex& getVertexAt(unsigned int);
+    Vertex& getVertexAt(unsigned int i);
 };
 

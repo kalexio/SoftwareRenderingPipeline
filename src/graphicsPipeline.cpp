@@ -3,7 +3,8 @@
 #include "graphicsPipeline.hpp"
 
 GraphicsPipeline::GraphicsPipeline()
- : mVertexShader(nullptr), mTriangle(nullptr), mRasterizer(nullptr), mFragmentShader(nullptr)
+ : mVertexShader(nullptr), mPrimitive(nullptr), mRasterizer(nullptr),
+   mFragmentShader(nullptr), mFramebuffer(nullptr)
 {
 
 }
@@ -11,9 +12,10 @@ GraphicsPipeline::GraphicsPipeline()
 GraphicsPipeline::~GraphicsPipeline()
 {
     delete mVertexShader;
-    delete mTriangle;
+    delete mPrimitive;
     delete mRasterizer;
     delete mFragmentShader;
+    delete mFramebuffer;
 }
 
 void GraphicsPipeline::configure()
@@ -24,36 +26,54 @@ void GraphicsPipeline::configure()
 void GraphicsPipeline::setup()
 {
     mVertexShader   = new VertexShader();
-    mTriangle       = new PrimitiveAssembly();
+    mPrimitive      = new PrimitiveAssembler();
     mRasterizer     = new Rasterizer();
     mFragmentShader = new FragmentShader();
+    mFramebuffer    = new Framebuffer(800, 600);
 }
 
 //should activate all the pipeline stages one by one
-void GraphicsPipeline::render(Mesh& mesh)
+//TODO: better design to pass the uniforms to the vertex shader
+void GraphicsPipeline::render(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport)
 {
-    startVertexShader(mesh);
+    startVertexShader(model, view, projection, viewport);
+    startPrimitiveAssembler();
     startRasterizer();
     startFragmentShader();
 }
 
-void GraphicsPipeline::startVertexShader(Mesh& mesh)
+/* Update glm related data for correct coordinate transformation
+ * and pass all vertices from the vertex shader stage process */
+void GraphicsPipeline::startVertexShader(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport)
 {
-    mVertexShader->updateUniforms();
-
-    for(unsigned int i = 0; i < mesh.getIndicesCount(); ++i) {
-        std::cout << "Calling vertex shader compute " << i << std::endl;
-        mVertexShader->compute(mesh.getVertexAt(i));
+    mVertexShader->updateUniforms(model, view, projection, viewport);
+    for (unsigned int i = 0; i < mMesh.getIndicesCount(); i++) {
+        mVertexShader->compute(mMesh.getVertexAt(i));
     }
+}
+
+void GraphicsPipeline::startPrimitiveAssembler()
+{
+    return;
 }
 
 void GraphicsPipeline::startRasterizer()
 {
-    return;
+    for (unsigned int i = 0; i < mMesh.getIndicesCount(); i+=3) {
+        mRasterizer->updatePoints(mMesh.getVertexAt(i),
+                                  mMesh.getVertexAt(i+1),
+                                  mMesh.getVertexAt(i+2));
+        mRasterizer->compute();
+    }
 }
 
 void GraphicsPipeline::startFragmentShader()
 {
     return;
+}
+
+void GraphicsPipeline::setMesh(Mesh mesh)
+{
+    mMesh = mesh;
 }
 

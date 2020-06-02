@@ -4,9 +4,8 @@
 
 class IShader {
 public:
-    IShader() {};
     virtual ~IShader() {};
 
-    virtual Vertex compute(Vertex& vertex) = 0;
-    virtual void updateUniforms() = 0;
+    virtual void compute(Vertex& vertex) = 0;
+    virtual void updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport) = 0;
 };

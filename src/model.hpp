@@ -18,6 +18,6 @@ private:
 public:
     Model(const char* objfile);
     unsigned int getMeshesCount() const;
-    Mesh& getMeshAt(unsigned int);
+    Mesh getMeshAt(unsigned int);
 };
 

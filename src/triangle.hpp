@@ -9,7 +9,8 @@ private:
     Vertex mVertex3;
 
 public:
-    Triangle();
+    Triangle() {};
+    Triangle(Vertex& v1, Vertex& v2, Vertex& v3);
     ~Triangle();
 
     Vertex getVertex1();
