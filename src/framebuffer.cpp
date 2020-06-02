@@ -4,6 +4,7 @@
 #include <cstring>
 
 const Color PURPLE = Color(128, 0, 128, 255);
+const Color RED = Color(128, 0, 0, 255);
 
 Framebuffer::Framebuffer(unsigned int width, unsigned int height)
  : mColorBuffer(nullptr), mDepthBuffer(nullptr), mWidth(width), mHeight(height)
@@ -39,9 +40,9 @@ float* Framebuffer::getDepthBuffer()
     return mDepthBuffer;
 }
 
-void Framebuffer::setPixel(const Color& color)
+void Framebuffer::setPixel(unsigned int x, unsigned int y)
 {
-    return;
+    std::memcpy(mColorBuffer + ((mHeight - 1 - y) * mWidth) + x, RED.raw, 4);
 }
 
 bool Framebuffer::depthBufferTest()

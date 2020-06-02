@@ -3,7 +3,7 @@
 #include "engine.hpp"
 
 Engine::Engine()
- : mCamera(nullptr), mPipeline(nullptr), mModel(nullptr)
+ : mDisplay(nullptr), mCamera(nullptr), mPipeline(nullptr), mModel(nullptr)
 {
 
 }
@@ -34,21 +34,22 @@ void Engine::setup(const char* modelPath, unsigned int width, unsigned int heigh
 
 void Engine::run()
 {
-    /* Loop through all the meshes fo the model, push it to
-     * the graphics pipeline and start rendering them */
-    for(unsigned int i = 0; i < mModel->getMeshesCount(); ++i) {
-        mPipeline->setMesh(mModel->getMeshAt(i));
-        std::cout << "Calling pipeline render " << std::endl;
-
-        mPipeline->render(mCamera->getModelMatrix(),
-                          mCamera->getViewMatrix(),
-                          mCamera->getProjectionMatrix(),
-                          mCamera->getViewportMatrix());
-    }
     while(!mDisplay->requestClose()) {
-        mDisplay->handleEvents();
         mDisplay->update();
+        mDisplay->handleEvents();
         mPipeline->mFramebuffer->setColorBuffer();
+
+        /* Loop through all the meshes fo the model, push it to
+         * the graphics pipeline and start rendering them */
+        for(unsigned int i = 0; i < mModel->getMeshesCount(); ++i) {
+            mPipeline->setMesh(mModel->getMeshAt(i));
+            //std::cout << "Calling pipeline render " << std::endl;
+
+            mPipeline->render(mCamera->getModelMatrix(),
+                              mCamera->getViewMatrix(),
+                              mCamera->getProjectionMatrix(),
+                              mCamera->getViewportMatrix());
+        }
         mDisplay->swapBuffer(mPipeline->mFramebuffer->getColorBuffer());
     }
 }

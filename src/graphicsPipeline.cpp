@@ -63,7 +63,7 @@ void GraphicsPipeline::startRasterizer()
         mRasterizer->updatePoints(mMesh.getVertexAt(i),
                                   mMesh.getVertexAt(i+1),
                                   mMesh.getVertexAt(i+2));
-        mRasterizer->compute();
+        mRasterizer->compute(mFramebuffer);
     }
 }
 

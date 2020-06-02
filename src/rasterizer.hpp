@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vertex.hpp"
+#include "framebuffer.hpp"
 
 class Rasterizer {
 private:
@@ -9,7 +10,8 @@ private:
     unsigned int x1;
     unsigned int y1;
 
-    void barycentric();
+    void barycentric(Framebuffer* framebuffer);
+    glm::vec3 edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 pixel);
     void computeAABB();
     bool faceCulling();
 
@@ -21,6 +23,6 @@ public:
     Rasterizer();
     ~Rasterizer();
 
-    void compute();
+    void compute(Framebuffer* framebuffer);
     void updatePoints(Vertex& v1, Vertex& v2, Vertex& v3);
 };

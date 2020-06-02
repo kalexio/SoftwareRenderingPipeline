@@ -17,7 +17,7 @@ public:
     void setColorBuffer();
     uint32_t* getColorBuffer();
     float* getDepthBuffer();
-    void setPixel(const Color& color);
+    void setPixel(unsigned int x, unsigned y);
     bool depthBufferTest();
     void setDepth();
 };
