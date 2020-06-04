@@ -40,9 +40,9 @@ float* Framebuffer::getDepthBuffer()
     return mDepthBuffer;
 }
 
-void Framebuffer::setPixel(unsigned int x, unsigned int y)
+void Framebuffer::setPixel(unsigned int x, unsigned int y, const Color& color)
 {
-    std::memcpy(mColorBuffer + ((mHeight - 1 - y) * mWidth) + x, RED.raw, 4);
+    std::memcpy(mColorBuffer + ((mHeight - 1 - y) * mWidth) + x, color.raw, 4);
 }
 
 bool Framebuffer::depthBufferTest()

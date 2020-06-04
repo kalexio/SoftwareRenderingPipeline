@@ -4,19 +4,20 @@
 #include "display.hpp"
 #include "model.hpp"
 #include "graphicsPipeline.hpp"
+#include "timer.hpp"
 
 class Engine {
 private:
-    Display*          mDisplay;
     Camera*           mCamera;
-    GraphicsPipeline* mPipeline;
+    Display*          mDisplay;
     Model*            mModel;
+    GraphicsPipeline* mPipeline;
+    Timer             mTimer;
 
 public:
-    Engine();
+    Engine(const char* modelPath, unsigned int width, unsigned int height);
     ~Engine();
 
-    void setup(const char* modelPath, unsigned int width, unsigned int height);
     void run();
 };
 

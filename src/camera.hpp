@@ -15,8 +15,16 @@ private:
     glm::mat4 mProjection;
     glm::mat4 mViewport;
 
+    unsigned int mWidth;
+    unsigned int mHeight;
+
+    void setModelMatrix();
+    void setViewMatrix();
+    void setProjectionMatrix();
+    void setViewportMatrix();
+
 public:
-    Camera();
+    Camera(unsigned int width, unsigned int height);
     ~Camera();
 
     glm::mat4& getModelMatrix();
@@ -24,9 +32,6 @@ public:
     glm::mat4& getProjectionMatrix();
     glm::mat4& getViewportMatrix();
 
-    void setModelMatrix();
-    void setViewMatrix();
-    void setProjectionMatrix();
-    void setViewportMatrix();
+    void prepareTransormationMatrices();
 };
 

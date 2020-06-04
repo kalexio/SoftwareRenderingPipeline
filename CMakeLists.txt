@@ -21,6 +21,7 @@ set(SOURCE_FILES
     src/model.cpp
     src/primitiveAssembler.cpp
     src/rasterizer.cpp
+    src/timer.cpp
     src/triangle.cpp
     src/vertex.cpp
     src/vertexShader.cpp

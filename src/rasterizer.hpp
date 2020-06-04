@@ -2,6 +2,7 @@
 
 #include "vertex.hpp"
 #include "framebuffer.hpp"
+#include "color.hpp"
 
 class Rasterizer {
 private:

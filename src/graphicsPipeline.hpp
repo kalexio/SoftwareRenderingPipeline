@@ -21,11 +21,9 @@ private:
     void startFragmentShader();
 
 public:
-    GraphicsPipeline();
+    GraphicsPipeline(unsigned int width, unsigned int height);
     ~GraphicsPipeline();
 
-    void configure();
-    void setup();
     void render(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport);
     void setMesh(Mesh mesh);
 

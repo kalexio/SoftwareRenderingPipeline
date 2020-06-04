@@ -2,9 +2,12 @@
 
 #include "graphicsPipeline.hpp"
 
-GraphicsPipeline::GraphicsPipeline()
- : mVertexShader(nullptr), mPrimitive(nullptr), mRasterizer(nullptr),
-   mFragmentShader(nullptr), mFramebuffer(nullptr)
+GraphicsPipeline::GraphicsPipeline(unsigned int width, unsigned int height)
+ : mVertexShader(new VertexShader()),
+   mPrimitive(new PrimitiveAssembler()),
+   mRasterizer(new Rasterizer()),
+   mFragmentShader(new FragmentShader()),
+   mFramebuffer(new Framebuffer(width, height))
 {
 
 }
@@ -16,20 +19,6 @@ GraphicsPipeline::~GraphicsPipeline()
     delete mRasterizer;
     delete mFragmentShader;
     delete mFramebuffer;
-}
-
-void GraphicsPipeline::configure()
-{
-
-}
-
-void GraphicsPipeline::setup()
-{
-    mVertexShader   = new VertexShader();
-    mPrimitive      = new PrimitiveAssembler();
-    mRasterizer     = new Rasterizer();
-    mFragmentShader = new FragmentShader();
-    mFramebuffer    = new Framebuffer(800, 600);
 }
 
 //should activate all the pipeline stages one by one

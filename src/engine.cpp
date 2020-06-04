@@ -2,8 +2,11 @@
 
 #include "engine.hpp"
 
-Engine::Engine()
- : mDisplay(nullptr), mCamera(nullptr), mPipeline(nullptr), mModel(nullptr)
+Engine::Engine(const char* modelPath, unsigned int width, unsigned int height)
+ : mCamera(new Camera(width, height)),
+   mDisplay(new Display(width, height)),
+   mModel(new Model(modelPath)),
+   mPipeline(new GraphicsPipeline(width, height))
 {
 
 }
@@ -11,30 +14,15 @@ Engine::Engine()
 Engine::~Engine()
 {
     delete mCamera;
-    delete mPipeline;
-    delete mModel;
     delete mDisplay;
-}
-
-void Engine::setup(const char* modelPath, unsigned int width, unsigned int height)
-{
-    mDisplay  = new Display(width, height);
-    mCamera   = new Camera();
-    mPipeline = new GraphicsPipeline();
-    mModel    = new Model(modelPath);
-
-    //TODO:: better call one function instead of 3
-    //the values will be depending on mouse and keyboard actions
-    mCamera->setModelMatrix();
-    mCamera->setViewMatrix();
-    mCamera->setProjectionMatrix();
-    mCamera->setViewportMatrix();
-    mPipeline->setup();
+    delete mModel;
+    delete mPipeline;
 }
 
 void Engine::run()
 {
     while(!mDisplay->requestClose()) {
+        mTimer.startRecording();
         mDisplay->update();
         mDisplay->handleEvents();
         mPipeline->mFramebuffer->setColorBuffer();
@@ -51,6 +39,8 @@ void Engine::run()
                               mCamera->getViewportMatrix());
         }
         mDisplay->swapBuffer(mPipeline->mFramebuffer->getColorBuffer());
+        mTimer.stopRecording();
+        mTimer.getFPS();
     }
 }
 

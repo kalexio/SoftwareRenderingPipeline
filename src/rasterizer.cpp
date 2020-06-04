@@ -1,5 +1,8 @@
 #include "rasterizer.hpp"
 #include <iostream>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+#include <iostream>
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -64,34 +67,18 @@ void Rasterizer::barycentric(Framebuffer* framebuffer)
     glm::vec3 v2(mVertex2.getPosition());
     glm::vec3 v3(mVertex3.getPosition());
 
-    //float area = edgeFunction(v1, v2, v3);
-    v1.z = 1 / v1.z;
-    v2.z = 1 / v2.z;
-    v3.z = 1 / v3.z;
-
-    //Color color(intensity * 255, intensity * 255, intensity * 255, 255);
-	//Point2D p;
+    //TODO compute light direction and pass the correct light to fragment
+    Color color(rand()%255, rand()%255, rand()%255, 255);
     for(unsigned int y = y0; y <= y1; ++y) {
         for(unsigned int x = x0; x <= x1; ++x) {
             glm::vec3 pixel(x + 0.5, y +0.5, 0);
             glm::vec3 weights = edgeFunction(v1, v2, v3, pixel);
 
             if(weights.x >= 0 && weights.y>= 0 && weights.z >= 0) {
-                //w0 /= area;
-                //w1 /= area;
-                //w2 /= area;
-                //float reciprocZ = v1.z * w0 + v2.z * w1 + v3.z * w2;
-                //float z = 1 / reciprocZ;
-    //            bool test = bmp.zBufferTest(p, z);
-    //            if (test) {
-    //                bmp.setDepth(p, z);
-    //                bmp.setPixel(p, color);
-                    framebuffer->setPixel(x, y);
-    //            }
+                framebuffer->setPixel(x, y, color);
             }
         }
     }
-
 }
 
 bool Rasterizer::faceCulling()
@@ -100,6 +87,7 @@ bool Rasterizer::faceCulling()
     glm::vec3 v1(mVertex1.getPosition());
     glm::vec3 v2(mVertex2.getPosition());
     glm::vec3 v3(mVertex3.getPosition());
+
 
     glm::vec3 normal = glm::cross(v3 - v1, v2 - v1);
     if ( normal.z < 0) {
@@ -122,3 +110,4 @@ glm::vec3 Rasterizer::edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm
     glm::vec3 weights(1 - s - t, s, t);
     return weights;
 }
+
