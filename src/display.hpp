@@ -10,6 +10,7 @@ private:
     unsigned int width;
     unsigned int height;
     bool quit;
+    float mZoom;
 
     bool init();
 
@@ -21,4 +22,5 @@ public:
     bool requestClose() const;
     void swapBuffer(const uint32_t* colorBuffer);
     void update();
+    float getZoom() const;
 };

@@ -8,11 +8,11 @@
 const float ZOOM =  45.0f;
 
 Camera::Camera(unsigned int width, unsigned int height)
- : mPosition(glm::vec3(0.0f, 0.0f, 3.0f)),
+ : mPosition(glm::vec3(0.0f, 0.0f, -3.0f)),
    mTarget(glm::vec3(0.0f, 0.0f, 0.0f)),
    mUp(glm::vec3(0.0f, 1.0f, 0.0f)),
    mWidth(width),
-   mHeight(height)
+   mHeight(height), mZoom(0)
 {
     prepareTransormationMatrices();
 }
@@ -45,19 +45,19 @@ glm::mat4& Camera::getViewportMatrix()
 void Camera::setModelMatrix()
 {
     mModel = glm::mat4(1.0f);
-    std::cout << glm::to_string(mModel) << std::endl;
+    //std::cout << glm::to_string(mModel) << std::endl;
 }
 
 void Camera::setViewMatrix()
 {
     mView = glm::lookAt(mPosition, mTarget, mUp);
-    std::cout << glm::to_string(mView) << std::endl;
+    //std::cout << glm::to_string(mView) << std::endl;
 }
 
 void Camera::setProjectionMatrix()
 {
-    mProjection = glm::perspective(glm::radians(ZOOM), (float)mWidth / (float)mHeight, 0.1f, 100.0f);
-    std::cout << glm::to_string(mProjection) << std::endl;
+    mProjection = glm::perspective(glm::radians(ZOOM + mZoom), (float)mWidth / (float)mHeight, 0.1f, 100.0f);
+    //std::cout << glm::to_string(mProjection) << std::endl;
 }
 
 void Camera::setViewportMatrix()
@@ -70,7 +70,7 @@ void Camera::setViewportMatrix()
     mViewport[0][3] = halfWidth;
     mViewport[1][1] = halfHeight;
     mViewport[1][3] = halfHeight;
-    std::cout << glm::to_string(mModel) << std::endl;
+    //std::cout << glm::to_string(mModel) << std::endl;
 }
 
 void Camera::prepareTransormationMatrices()
@@ -79,5 +79,11 @@ void Camera::prepareTransormationMatrices()
     setViewMatrix();
     setProjectionMatrix();
     setViewportMatrix();
+}
+
+void Camera::setZoom(float zoom)
+{
+    mZoom += zoom;
+    prepareTransormationMatrices();
 }
 

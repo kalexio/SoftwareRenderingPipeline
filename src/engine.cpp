@@ -3,8 +3,7 @@
 #include "engine.hpp"
 
 Engine::Engine(const char* modelPath, unsigned int width, unsigned int height)
- : mCamera(new Camera(width, height)),
-   mDisplay(new Display(width, height)),
+ : mDisplay(new Display(width, height)),
    mModel(new Model(modelPath)),
    mPipeline(new GraphicsPipeline(width, height))
 {
@@ -13,7 +12,6 @@ Engine::Engine(const char* modelPath, unsigned int width, unsigned int height)
 
 Engine::~Engine()
 {
-    delete mCamera;
     delete mDisplay;
     delete mModel;
     delete mPipeline;
@@ -27,20 +25,25 @@ void Engine::run()
         mDisplay->handleEvents();
         mPipeline->mFramebuffer->setColorBuffer();
 
-        /* Loop through all the meshes fo the model, push it to
-         * the graphics pipeline and start rendering them */
-        for(unsigned int i = 0; i < mModel->getMeshesCount(); ++i) {
-            mPipeline->setMesh(mModel->getMeshAt(i));
-            //std::cout << "Calling pipeline render " << std::endl;
+        float zoom = mDisplay->getZoom();
+        renderModels(zoom);
 
-            mPipeline->render(mCamera->getModelMatrix(),
-                              mCamera->getViewMatrix(),
-                              mCamera->getProjectionMatrix(),
-                              mCamera->getViewportMatrix());
-        }
         mDisplay->swapBuffer(mPipeline->mFramebuffer->getColorBuffer());
         mTimer.stopRecording();
         mTimer.getFPS();
     }
+}
+
+void Engine::renderModels(float zoom)
+{
+    /* Loop through all the meshes of the model, push it to
+     * the graphics pipeline and start rendering them */
+    for(unsigned int i = 0; i < mModel->getMeshesCount(); ++i) {
+        mPipeline->setMesh(mModel->getMeshAt(i));
+
+        //std::cout << "Calling pipeline render " << '\n';
+        mPipeline->render(zoom);
+    }
+
 }
 

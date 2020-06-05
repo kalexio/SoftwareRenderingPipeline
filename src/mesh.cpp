@@ -1,7 +1,7 @@
 #include "mesh.hpp"
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
- : mVertices(vertices), mIndices(indices)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, unsigned int faces)
+ : mVertices(vertices), mIndices(indices), mFaces(faces)
 {
 
 }
@@ -24,5 +24,10 @@ unsigned int Mesh::getIndicesCount() const
 Vertex& Mesh::getVertexAt(unsigned int i)
 {
     return mVertices[mIndices[i]];
+}
+
+unsigned int Mesh::getFacesCount() const
+{
+    return mFaces;
 }
 

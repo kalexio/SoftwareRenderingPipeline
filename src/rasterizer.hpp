@@ -15,15 +15,20 @@ private:
     glm::vec3 edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 pixel);
     void computeAABB();
     bool faceCulling();
+    float interpolate_depth(glm::vec3 depths, glm::vec3 weights);
 
     Vertex mVertex1;
     Vertex mVertex2;
     Vertex mVertex3;
+
+    glm::vec3 attrPos1;
+    glm::vec3 attrPos2;
+    glm::vec3 attrPos3;
 
 public:
     Rasterizer();
     ~Rasterizer();
 
     void compute(Framebuffer* framebuffer);
-    void updatePoints(Vertex& v1, Vertex& v2, Vertex& v3);
+    void updatePoints(Vertex* attributes, glm::vec3* attrPos);
 };

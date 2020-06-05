@@ -17,11 +17,15 @@ Rasterizer::~Rasterizer()
 
 }
 
-void Rasterizer::updatePoints(Vertex& v1, Vertex& v2, Vertex& v3)
+void Rasterizer::updatePoints(Vertex* attributes, glm::vec3* v)
 {
-    mVertex1 = v1;
-    mVertex2 = v2;
-    mVertex3 = v3;
+    mVertex1 = attributes[0];
+    mVertex2 = attributes[1];
+    mVertex3 = attributes[2];
+
+    attrPos1 = v[0];
+    attrPos2 = v[1];
+    attrPos3 = v[2];
 }
 
 void Rasterizer::compute(Framebuffer* framebuffer)
@@ -30,7 +34,6 @@ void Rasterizer::compute(Framebuffer* framebuffer)
 
     discard = faceCulling();
     if (discard == true) {
-        //std::cout << "discarded" << std::endl;
         return;
     }
 
@@ -67,15 +70,29 @@ void Rasterizer::barycentric(Framebuffer* framebuffer)
     glm::vec3 v2(mVertex2.getPosition());
     glm::vec3 v3(mVertex3.getPosition());
 
-    //TODO compute light direction and pass the correct light to fragment
-    Color color(rand()%255, rand()%255, rand()%255, 255);
-    for(unsigned int y = y0; y <= y1; ++y) {
-        for(unsigned int x = x0; x <= x1; ++x) {
-            glm::vec3 pixel(x + 0.5, y +0.5, 0);
-            glm::vec3 weights = edgeFunction(v1, v2, v3, pixel);
+    glm::vec3 lightDir = glm::vec3(0.0f, 0.0f, 1.0f);
+    glm::vec3 v3v1 = attrPos3 - attrPos1;
+    glm::vec3 v2v1 = attrPos2 - attrPos1;
+    glm::vec3 n = glm::normalize(glm::cross(v3v1, v2v1));
 
-            if(weights.x >= 0 && weights.y>= 0 && weights.z >= 0) {
-                framebuffer->setPixel(x, y, color);
+    float intensity = glm::dot(n, lightDir);
+
+    if (intensity > 0 ) {
+        Color color(intensity * 255, intensity * 255, intensity * 255, 255);
+        for(unsigned int y = y0; y <= y1; ++y) {
+            for(unsigned int x = x0; x <= x1; ++x) {
+                glm::vec3 pixel(x + 0.5, y +0.5, 0);
+                glm::vec3 weights = edgeFunction(v1, v2, v3, pixel);
+
+                if(weights.x >= 0 && weights.y>= 0 && weights.z >= 0) {
+                    glm::vec3 depths(v1.z, v2.z, v3.z);
+                    float depth = interpolate_depth(depths, weights);
+                    bool test = framebuffer->depthBufferTest(x, y, depth);
+                    if (test) {
+                        framebuffer->setDepth(x, y, depth);
+                        framebuffer->setPixel(x, y, color);
+                    }
+                }
             }
         }
     }
@@ -84,12 +101,8 @@ void Rasterizer::barycentric(Framebuffer* framebuffer)
 bool Rasterizer::faceCulling()
 {
     bool faceCulling = false;
-    glm::vec3 v1(mVertex1.getPosition());
-    glm::vec3 v2(mVertex2.getPosition());
-    glm::vec3 v3(mVertex3.getPosition());
 
-
-    glm::vec3 normal = glm::cross(v3 - v1, v2 - v1);
+    glm::vec3 normal = glm::cross(attrPos3 - attrPos1, attrPos2 - attrPos1);
     if ( normal.z < 0) {
         faceCulling = true;
     }
@@ -109,5 +122,12 @@ glm::vec3 Rasterizer::edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm
 
     glm::vec3 weights(1 - s - t, s, t);
     return weights;
+}
+
+float Rasterizer::interpolate_depth(glm::vec3 depths, glm::vec3 weights) {
+     float depth0 = depths.x * weights.x;
+     float depth1 = depths.y * weights.y;
+     float depth2 = depths.z * weights.z;
+     return depth0 + depth1 + depth2;
 }
 

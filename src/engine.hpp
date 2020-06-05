@@ -1,6 +1,5 @@
 #pragma once
 
-#include "camera.hpp"
 #include "display.hpp"
 #include "model.hpp"
 #include "graphicsPipeline.hpp"
@@ -8,11 +7,12 @@
 
 class Engine {
 private:
-    Camera*           mCamera;
     Display*          mDisplay;
     Model*            mModel;
     GraphicsPipeline* mPipeline;
     Timer             mTimer;
+
+    void renderModels(float zoom);
 
 public:
     Engine(const char* modelPath, unsigned int width, unsigned int height);

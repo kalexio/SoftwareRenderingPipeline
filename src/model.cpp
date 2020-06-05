@@ -20,8 +20,8 @@ void Model::loadModel(const char* objfile)
     }
 
     processNode(scene->mRootNode, scene);
-    std::cout << "Num of meshes: " << meshes << std::endl;
-    std::cout << "Num of faces: " << faces << std::endl;
+    std::cout << "Num of meshes: " << meshes << '\n';
+    std::cout << "Num of faces: " << faces << '\n';
 }
 
 void Model::processNode(aiNode* node, const aiScene* scene)
@@ -42,17 +42,15 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    const aiVector3D zero(0.0f, 0.0f, 0.0f);
     for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
         Vertex vertex;
 
         vertex.mPosition.x = mesh->mVertices[i].x;
-        //std::cout << mesh->mVertices[i].x;
         vertex.mPosition.y = mesh->mVertices[i].y;
         vertex.mPosition.z = mesh->mVertices[i].z;
         vertex.mPosition.w = 1.0f;
+
         vertex.mNormal.x = mesh->mNormals[i].x;
-        //std::cout << " " << mesh->mNormals[i].x << std::endl;
         vertex.mNormal.y = mesh->mNormals[i].y;
         vertex.mNormal.z = mesh->mNormals[i].z;
         vertex.mNormal.w = 0.0f;
@@ -65,14 +63,10 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; ++j) {
             indices.push_back(face.mIndices[j]);
-            //std::cout << " " << face.mIndices[j] << std::endl;
         }
     }
 
-    //std::cout << "Elements: " << indices.size() << std::endl;
-    //std::cout << "different vertices: " << mesh->mNumVertices << std::endl;
-
-    return Mesh(vertices, indices);
+    return Mesh(vertices, indices, mesh->mNumFaces);
 }
 
 unsigned int Model::getMeshesCount() const

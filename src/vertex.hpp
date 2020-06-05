@@ -11,7 +11,6 @@ public:
 
     Vertex();
     Vertex(glm::vec4 position, glm::vec4 normal);
-    //Vertex(const Vertex& other);
     ~Vertex();
 
     glm::vec4& getPosition();

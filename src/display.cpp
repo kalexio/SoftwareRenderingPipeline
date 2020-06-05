@@ -1,9 +1,10 @@
 #include "display.hpp"
+#include <iostream>
 
 Display::Display(unsigned int width, unsigned int height)
  : window(nullptr), surface(nullptr),
-   title("Graphics Pipeline"), width(width), height(height),
-   quit(false)
+   title("SoftwareRenderingPipeline"), width(width), height(height),
+   quit(false), mZoom(0.0f)
 {
     init();
 }
@@ -45,11 +46,23 @@ void Display::swapBuffer(const uint32_t* colorBuffer)
 
 void Display::handleEvents()
 {
+    mZoom = 0.0f;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT: {
                 quit = true;
+                break;
+            }
+            case SDL_MOUSEWHEEL: {
+                if (event.wheel.y > 0) {
+                    mZoom = 1.0f;
+                    break;
+                }
+                if (event.wheel.y < 0) {
+                    mZoom = -1.0f;
+                    break;
+                }
                 break;
             }
             case SDL_KEYDOWN: {
@@ -70,5 +83,10 @@ bool Display::requestClose() const
 void Display::update()
 {
     SDL_UpdateWindowSurface(window);
+}
+
+float Display::getZoom() const
+{
+    return mZoom;
 }
 

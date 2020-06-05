@@ -2,7 +2,7 @@
 
 #include "engine.hpp"
 
-const char* MODEL_PATH = "/home/user/Desktop/graphics/sw-graphics-pipeline-rasterizer/obj/monkey_smooth.obj";
+const char* MODEL_PATH = "../obj/monkey_smooth.obj";
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 

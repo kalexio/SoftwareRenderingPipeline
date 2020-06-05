@@ -15,13 +15,6 @@ Vertex::Vertex(glm::vec4 position, glm::vec4 normal)
 
 }
 
-//Vertex::Vertex(const Vertex& other)
-//{
-//    std::cout << "Calling copy constructor " << __func__ << std::endl;
-//    mPosition = other.mPosition;
-//    mNormal   = other.mNormal;
-//}
-
 Vertex::~Vertex()
 {
 

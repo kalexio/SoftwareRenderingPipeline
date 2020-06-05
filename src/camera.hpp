@@ -17,6 +17,7 @@ private:
 
     unsigned int mWidth;
     unsigned int mHeight;
+    float mZoom;
 
     void setModelMatrix();
     void setViewMatrix();
@@ -33,5 +34,6 @@ public:
     glm::mat4& getViewportMatrix();
 
     void prepareTransormationMatrices();
+    void setZoom(float zoom);
 };
 

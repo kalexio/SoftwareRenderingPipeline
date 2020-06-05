@@ -2,7 +2,8 @@
 #include <iostream>
 
 Timer::Timer()
- : frames(0)
+ : mAccumulatedTime(std::chrono::nanoseconds::zero()),
+   frames(0)
 {
 
 }
