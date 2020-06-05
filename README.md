@@ -26,8 +26,8 @@ $ ./SoftwareRenderingPipeline
 ## References Litterature
 * [Scratch A Pixel](https://www.scratchapixel.com/)
 * [Tiny Renderer](https://github.com/ssloy/tinyrenderer/wiki)
-* [Leanrn OpenGL](https://learnopengl.com/)
-* [Rasterizer] (https://github.com/Nickelium/Rasterizer/)
+* [Learn OpenGL](https://learnopengl.com/)
+* [Rasterizer](https://github.com/Nickelium/Rasterizer)
 
 ## Reference Models and Textures
 * Suzanne Blender, Blender Foundation
