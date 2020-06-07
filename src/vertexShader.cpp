@@ -2,7 +2,8 @@
 
 #include "vertexShader.hpp"
 
-VertexShader::VertexShader()
+VertexShader::VertexShader(unsigned int width, unsigned int height)
+ : mWidth(width), mHeight(height)
 {
 
 }
@@ -47,7 +48,9 @@ void VertexShader::perspectiveDivision(Vertex& vertex)
 void VertexShader::viewportTransformation(Vertex& vertex)
 {
     //vertex.positionMulMat(mViewport);
-    vertex.mPosition.x = (vertex.mPosition.x + 1.0f) * 400.0f;
-    vertex.mPosition.y = (vertex.mPosition.y + 1.0f) * 300.0f;
+    float halfWidth = float(mWidth) / 2.0f;
+    float halfHeight = float(mHeight) / 2.0f;
+    vertex.mPosition.x = (vertex.mPosition.x + 1.0f) * halfWidth;
+    vertex.mPosition.y = (vertex.mPosition.y + 1.0f) * halfHeight;
 }
 

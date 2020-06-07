@@ -11,6 +11,8 @@ private:
     unsigned int y0;
     unsigned int x1;
     unsigned int y1;
+    unsigned int mWidth;
+    unsigned int mHeight;
 
     void barycentric(Framebuffer* framebuffer, FragmentShader* fragmentShader);
     glm::vec3 edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 pixel);
@@ -27,7 +29,7 @@ private:
     glm::vec3 attrPos3;
 
 public:
-    Rasterizer();
+    Rasterizer(unsigned int width, unsigned int height);
     ~Rasterizer();
 
     void compute(Framebuffer* framebuffer, FragmentShader* fragmentShader);

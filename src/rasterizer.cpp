@@ -4,10 +4,8 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
-Rasterizer::Rasterizer()
+Rasterizer::Rasterizer(unsigned int width, unsigned int height)
+ : mWidth(width), mHeight(height)
 {
 
 }
@@ -55,9 +53,9 @@ void Rasterizer::computeAABB()
     //std::cout << "ymax: " << ymax << std::endl;
 
     x0 = std::max((unsigned int)0, (unsigned int)(std::floor(xmin)));
-    x1 = std::min(SCR_WIDTH - 1, (unsigned int)(std::floor(xmax)));
+    x1 = std::min(mWidth - 1, (unsigned int)(std::floor(xmax)));
     y0 = std::max((unsigned int)0, (unsigned int)(std::floor(ymin)));
-    y1 = std::min(SCR_HEIGHT - 1, (unsigned int)(std::floor(ymax)));
+    y1 = std::min(mHeight - 1, (unsigned int)(std::floor(ymax)));
     //std::cout << "xmin: " << x0 << std::endl;
     //std::cout << "ymin: " << y0 << std::endl;
     //std::cout << "xmax: " << x1 << std::endl;

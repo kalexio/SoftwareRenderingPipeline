@@ -4,7 +4,7 @@
 
 class VertexShader {
 public:
-    VertexShader();
+    VertexShader(unsigned int width, unsigned int height);
     ~VertexShader();
 
     void compute(Vertex& vertex);
@@ -15,6 +15,8 @@ private:
     glm::mat4 mView;
     glm::mat4 mProjection;
     glm::mat4 mViewport;
+    unsigned int mWidth;
+    unsigned int mHeight;
 
     void projectionMVP(Vertex& vertex);
     void perspectiveDivision(Vertex& vertex);

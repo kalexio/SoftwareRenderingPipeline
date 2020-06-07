@@ -1,9 +1,9 @@
 #include "graphicsPipeline.hpp"
 
 GraphicsPipeline::GraphicsPipeline(unsigned int width, unsigned int height)
- : mVertexShader(new VertexShader()),
+ : mVertexShader(new VertexShader(width, height)),
    mPrimitive(new PrimitiveAssembler()),
-   mRasterizer(new Rasterizer()),
+   mRasterizer(new Rasterizer(width, height)),
    mCamera(new Camera(width, height)),
    mFramebuffer(new Framebuffer(width, height)),
    mFragmentShader(new FragmentShader())
