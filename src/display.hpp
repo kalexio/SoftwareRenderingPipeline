@@ -21,6 +21,6 @@ public:
     void handleEvents();
     bool requestClose() const;
     void swapBuffer(const uint32_t* colorBuffer);
-    void update();
+    void update() const;
     float getZoom() const;
 };

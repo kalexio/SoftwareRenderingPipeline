@@ -1,6 +1,7 @@
 #include "fragmentShader.hpp"
 
 FragmentShader::FragmentShader()
+ : mOutColor(0)
 {
 
 }
@@ -10,12 +11,10 @@ FragmentShader::~FragmentShader()
 
 }
 
-void FragmentShader::compute(Vertex& vertex)
+Color FragmentShader::compute(unsigned int x, unsigned y, const Color& color)
 {
-    return;
+    Color outColor = color;
+
+    return outColor;
 }
 
-void FragmentShader::updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport)
-{
-    return;
-}

@@ -28,7 +28,7 @@ void Rasterizer::updatePoints(Vertex* attributes, glm::vec3* v)
     attrPos3 = v[2];
 }
 
-void Rasterizer::compute(Framebuffer* framebuffer)
+void Rasterizer::compute(Framebuffer* framebuffer, FragmentShader* fragmentShader)
 {
     bool discard = false;
 
@@ -38,7 +38,7 @@ void Rasterizer::compute(Framebuffer* framebuffer)
     }
 
     computeAABB();
-    barycentric(framebuffer);
+    barycentric(framebuffer, fragmentShader);
 }
 
 void Rasterizer::computeAABB()
@@ -64,7 +64,7 @@ void Rasterizer::computeAABB()
     //std::cout << "ymax: " << y1 << std::endl;
 }
 
-void Rasterizer::barycentric(Framebuffer* framebuffer)
+void Rasterizer::barycentric(Framebuffer* framebuffer, FragmentShader* fragmentShader)
 {
     glm::vec3 v1(mVertex1.getPosition());
     glm::vec3 v2(mVertex2.getPosition());
@@ -89,8 +89,9 @@ void Rasterizer::barycentric(Framebuffer* framebuffer)
                     float depth = interpolate_depth(depths, weights);
                     bool test = framebuffer->depthBufferTest(x, y, depth);
                     if (test) {
+                        Color outColor = fragmentShader->compute(x, y, color);
                         framebuffer->setDepth(x, y, depth);
-                        framebuffer->setPixel(x, y, color);
+                        framebuffer->setPixel(x, y, outColor);
                     }
                 }
             }

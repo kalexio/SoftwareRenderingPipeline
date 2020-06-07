@@ -3,6 +3,7 @@
 #include "vertex.hpp"
 #include "framebuffer.hpp"
 #include "color.hpp"
+#include "fragmentShader.hpp"
 
 class Rasterizer {
 private:
@@ -11,7 +12,7 @@ private:
     unsigned int x1;
     unsigned int y1;
 
-    void barycentric(Framebuffer* framebuffer);
+    void barycentric(Framebuffer* framebuffer, FragmentShader* fragmentShader);
     glm::vec3 edgeFunction(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3, glm::vec3 pixel);
     void computeAABB();
     bool faceCulling();
@@ -29,6 +30,6 @@ public:
     Rasterizer();
     ~Rasterizer();
 
-    void compute(Framebuffer* framebuffer);
+    void compute(Framebuffer* framebuffer, FragmentShader* fragmentShader);
     void updatePoints(Vertex* attributes, glm::vec3* attrPos);
 };

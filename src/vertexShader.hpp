@@ -1,14 +1,14 @@
 #pragma once
 
-#include "ishader.hpp"
+#include "vertex.hpp"
 
-class VertexShader final : public IShader {
+class VertexShader {
 public:
     VertexShader();
-    virtual ~VertexShader() override;
+    ~VertexShader();
 
-    virtual void compute(Vertex& vertex) override;
-    virtual void updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport) override;
+    void compute(Vertex& vertex);
+    void updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport);
 
 private:
     glm::mat4 mModel;
@@ -20,3 +20,4 @@ private:
     void perspectiveDivision(Vertex& vertex);
     void viewportTransformation(Vertex& vertex);
 };
+

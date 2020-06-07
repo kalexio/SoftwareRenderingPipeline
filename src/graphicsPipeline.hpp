@@ -2,18 +2,17 @@
 
 #include "vertexShader.hpp"
 #include "primitiveAssembler.hpp"
-#include "rasterizer.hpp"
 #include "fragmentShader.hpp"
+#include "rasterizer.hpp"
 #include "mesh.hpp"
 #include "framebuffer.hpp"
 #include "camera.hpp"
 
 class GraphicsPipeline {
 private:
-    IShader*             mVertexShader;
+    VertexShader*        mVertexShader;
     PrimitiveAssembler*  mPrimitive;
     Rasterizer*          mRasterizer;
-    IShader*             mFragmentShader;
     Mesh                 mMesh;
     Camera*              mCamera;
 
@@ -30,4 +29,5 @@ public:
     void setMesh(Mesh mesh);
 
     Framebuffer*         mFramebuffer;
+    FragmentShader*      mFragmentShader;
 };

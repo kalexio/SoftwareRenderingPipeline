@@ -44,6 +44,5 @@ void Engine::renderModels(float zoom)
         //std::cout << "Calling pipeline render " << '\n';
         mPipeline->render(zoom);
     }
-
 }
 

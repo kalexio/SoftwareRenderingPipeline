@@ -4,9 +4,9 @@ GraphicsPipeline::GraphicsPipeline(unsigned int width, unsigned int height)
  : mVertexShader(new VertexShader()),
    mPrimitive(new PrimitiveAssembler()),
    mRasterizer(new Rasterizer()),
-   mFragmentShader(new FragmentShader()),
    mCamera(new Camera(width, height)),
-   mFramebuffer(new Framebuffer(width, height))
+   mFramebuffer(new Framebuffer(width, height)),
+   mFragmentShader(new FragmentShader())
 {
 
 }
@@ -63,7 +63,7 @@ void GraphicsPipeline::startPrimitiveAssembler()
 void GraphicsPipeline::startRasterizer(Vertex* attributes, glm::vec3* attrPos)
 {
     mRasterizer->updatePoints(attributes, attrPos);
-    mRasterizer->compute(mFramebuffer);
+    mRasterizer->compute(mFramebuffer, mFragmentShader);
 }
 
 void GraphicsPipeline::startFragmentShader()

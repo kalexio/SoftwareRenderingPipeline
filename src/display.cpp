@@ -80,7 +80,7 @@ bool Display::requestClose() const
     return quit;
 }
 
-void Display::update()
+void Display::update() const
 {
     SDL_UpdateWindowSurface(window);
 }
