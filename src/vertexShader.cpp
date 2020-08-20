@@ -26,6 +26,28 @@ void VertexShader::compute(Vertex& vertex)
     return;
 }
 
+void VertexShader::compute1(attributes_t* attribute, varyings_t* varying)
+{
+    varying->normal = glm::vec3(attribute->position.x, attribute->position.y, attribute->position.z);
+
+    glm::mat4 matrixMVP = mProjection * mView * mModel;
+    attribute->position = matrixMVP * attribute->position;
+
+    float w_inv = 1.0f / attribute->position.w;
+    attribute->position.x = attribute->position.x * w_inv;
+    attribute->position.y = attribute->position.y * w_inv;
+    attribute->position.z = attribute->position.z * w_inv;
+    attribute->position.w = 1.0f;
+
+    float halfWidth = float(mWidth) / 2.0f;
+    float halfHeight = float(mHeight) / 2.0f;
+    attribute->position.x = (attribute->position.x + 1.0f) * halfWidth;
+    attribute->position.y = (attribute->position.y + 1.0f) * halfHeight;
+
+    varying->position = glm::vec3(attribute->position.x, attribute->position.y, attribute->position.z);
+    //varying->normal = glm::vec3(attribute->normal);
+}
+
 void VertexShader::updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport)
 {
     mModel      = model;
@@ -53,4 +75,3 @@ void VertexShader::viewportTransformation(Vertex& vertex)
     vertex.mPosition.x = (vertex.mPosition.x + 1.0f) * halfWidth;
     vertex.mPosition.y = (vertex.mPosition.y + 1.0f) * halfHeight;
 }
-

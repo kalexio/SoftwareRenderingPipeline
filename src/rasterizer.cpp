@@ -2,7 +2,6 @@
 #include <iostream>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/string_cast.hpp>
-#include <iostream>
 
 Rasterizer::Rasterizer(unsigned int width, unsigned int height)
  : mWidth(width), mHeight(height)
@@ -15,62 +14,44 @@ Rasterizer::~Rasterizer()
 
 }
 
-void Rasterizer::updatePoints(Vertex* attributes, glm::vec3* v)
-{
-    mVertex1 = attributes[0];
-    mVertex2 = attributes[1];
-    mVertex3 = attributes[2];
-
-    attrPos1 = v[0];
-    attrPos2 = v[1];
-    attrPos3 = v[2];
-}
-
-void Rasterizer::compute(Framebuffer* framebuffer, FragmentShader* fragmentShader)
+void Rasterizer::compute(Framebuffer* framebuffer, FragmentShader* fragmentShader, varyings_t* varyings)
 {
     bool discard = false;
 
-    discard = faceCulling();
+    discard = faceCulling(varyings);
     if (discard == true) {
         return;
     }
 
-    computeAABB();
-    barycentric(framebuffer, fragmentShader);
+    computeAABB(varyings);
+    barycentric(framebuffer, fragmentShader, varyings);
+
 }
 
-void Rasterizer::computeAABB()
+void Rasterizer::computeAABB(varyings_t* varyings)
 {
     float xmin, xmax, ymin, ymax;
 
-    xmin = std::min(std::min(mVertex1.getPosition().x, mVertex2.getPosition().x), mVertex3.getPosition().x),
-    ymin = std::min(std::min(mVertex1.getPosition().y, mVertex2.getPosition().y), mVertex3.getPosition().y);
-    xmax = std::max(std::max(mVertex1.getPosition().x, mVertex2.getPosition().x), mVertex3.getPosition().x);
-    ymax = std::max(std::max(mVertex1.getPosition().y, mVertex2.getPosition().y), mVertex3.getPosition().y);
-    //std::cout << "xmin: " << xmin << std::endl;
-    //std::cout << "ymin: " << ymin << std::endl;
-    //std::cout << "xmax: " << xmax << std::endl;
-    //std::cout << "ymax: " << ymax << std::endl;
+    xmin = std::min(std::min(varyings[0].position.x, varyings[1].position.x), varyings[2].position.x),
+    ymin = std::min(std::min(varyings[0].position.y, varyings[1].position.y), varyings[2].position.y);
+    xmax = std::max(std::max(varyings[0].position.x, varyings[1].position.x), varyings[2].position.x);
+    ymax = std::max(std::max(varyings[0].position.y, varyings[1].position.y), varyings[2].position.y);
 
     x0 = std::max((unsigned int)0, (unsigned int)(std::floor(xmin)));
     x1 = std::min(mWidth - 1, (unsigned int)(std::floor(xmax)));
     y0 = std::max((unsigned int)0, (unsigned int)(std::floor(ymin)));
     y1 = std::min(mHeight - 1, (unsigned int)(std::floor(ymax)));
-    //std::cout << "xmin: " << x0 << std::endl;
-    //std::cout << "ymin: " << y0 << std::endl;
-    //std::cout << "xmax: " << x1 << std::endl;
-    //std::cout << "ymax: " << y1 << std::endl;
 }
 
-void Rasterizer::barycentric(Framebuffer* framebuffer, FragmentShader* fragmentShader)
+void Rasterizer::barycentric(Framebuffer* framebuffer, FragmentShader* fragmentShader, varyings_t* varyings)
 {
-    glm::vec3 v1(mVertex1.getPosition());
-    glm::vec3 v2(mVertex2.getPosition());
-    glm::vec3 v3(mVertex3.getPosition());
+    glm::vec3 v1(varyings[0].position);
+    glm::vec3 v2(varyings[1].position);
+    glm::vec3 v3(varyings[2].position);
 
     glm::vec3 lightDir = glm::vec3(0.0f, 0.0f, 1.0f);
-    glm::vec3 v3v1 = attrPos3 - attrPos1;
-    glm::vec3 v2v1 = attrPos2 - attrPos1;
+    glm::vec3 v3v1 = varyings[2].normal - varyings[0].normal;
+    glm::vec3 v2v1 = varyings[1].normal - varyings[0].normal;
     glm::vec3 n = glm::normalize(glm::cross(v3v1, v2v1));
 
     float intensity = glm::dot(n, lightDir);
@@ -97,11 +78,11 @@ void Rasterizer::barycentric(Framebuffer* framebuffer, FragmentShader* fragmentS
     }
 }
 
-bool Rasterizer::faceCulling()
+bool Rasterizer::faceCulling(varyings_t* varyings)
 {
     bool faceCulling = false;
 
-    glm::vec3 normal = glm::cross(attrPos3 - attrPos1, attrPos2 - attrPos1);
+    glm::vec3 normal = glm::cross(varyings[2].normal - varyings[0].normal, varyings[1].normal - varyings[0].normal);
     if ( normal.z < 0) {
         faceCulling = true;
     }
@@ -129,4 +110,3 @@ float Rasterizer::interpolate_depth(glm::vec3 depths, glm::vec3 weights) {
      float depth2 = depths.z * weights.z;
      return depth0 + depth1 + depth2;
 }
-

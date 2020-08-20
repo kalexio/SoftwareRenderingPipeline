@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vertex.hpp"
+#include "gl.hpp"
 
 class VertexShader {
 public:
@@ -8,6 +9,7 @@ public:
     ~VertexShader();
 
     void compute(Vertex& vertex);
+    void compute1(attributes_t* attribute, varyings_t* varying);
     void updateUniforms(glm::mat4& model, glm::mat4& view, glm::mat4& projection, glm::mat4& viewport);
 
 private:

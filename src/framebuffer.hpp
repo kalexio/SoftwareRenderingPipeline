@@ -10,11 +10,14 @@ private:
     unsigned int mWidth;
     unsigned int mHeight;
 
+    void clearColorBuffer();
+    void clearDepthBuffer();
+
 public:
     Framebuffer(unsigned int width, unsigned int height);
     ~Framebuffer();
 
-    void setColorBuffer();
+    void clearFramebuffer();
     uint32_t* getColorBuffer();
     float* getDepthBuffer();
     void setPixel(unsigned int x, unsigned y, const Color& color);

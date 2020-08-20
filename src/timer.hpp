@@ -8,7 +8,7 @@ private:
     std::chrono::high_resolution_clock::time_point mPreviousTime;
     std::chrono::duration<double, std::milli> mAccumulatedTime;
     std::chrono::high_resolution_clock mTimer;
-    unsigned int frames;
+    unsigned int mFrames;
 
 public:
     Timer();

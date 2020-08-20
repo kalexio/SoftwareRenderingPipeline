@@ -9,12 +9,11 @@ const Color RED = Color(128, 0, 0, 255);
 Framebuffer::Framebuffer(unsigned int width, unsigned int height)
  : mColorBuffer(nullptr), mDepthBuffer(nullptr), mWidth(width), mHeight(height)
 {
-    unsigned long size = mWidth * mHeight;
-    mColorBuffer = new uint32_t[size]();
-    mDepthBuffer = new float[size];
-    for(unsigned int i = 0; i < width * height; ++i) {
-       mDepthBuffer[i] = std::numeric_limits<float>::max();
-    }
+    uint32_t numOfPixels = mWidth * mHeight;
+    mColorBuffer = new uint32_t[numOfPixels]();
+    mDepthBuffer = new float[numOfPixels];
+
+    clearFramebuffer();
 }
 
 Framebuffer::~Framebuffer()
@@ -23,12 +22,26 @@ Framebuffer::~Framebuffer()
     delete[] mDepthBuffer;
 }
 
-void Framebuffer::setColorBuffer()
+void Framebuffer::clearColorBuffer()
 {
-    for(unsigned int i = 0; i < mWidth * mHeight; ++i) {
+    uint32_t numOfPixels = mWidth * mHeight;
+    for(uint32_t i = 0; i < numOfPixels; ++i) {
         std::memcpy(mColorBuffer + i, PURPLE.raw, 4);
+    }
+}
+
+void Framebuffer::clearDepthBuffer()
+{
+    uint32_t numOfPixels = mWidth * mHeight;
+    for(uint32_t i = 0; i < numOfPixels; ++i) {
         mDepthBuffer[i] = std::numeric_limits<float>::max();
     }
+}
+
+void Framebuffer::clearFramebuffer()
+{
+    clearColorBuffer();
+    clearDepthBuffer();
 }
 
 uint32_t* Framebuffer::getColorBuffer()
@@ -57,7 +70,6 @@ bool Framebuffer::depthBufferTest(unsigned int x, unsigned int y, float depth)
 
 void Framebuffer::setDepth(unsigned int x, unsigned int y, float depth)
 {
-    std::memcpy(mDepthBuffer + ((mHeight - 1 - y) * mWidth) + x, &depth, 4);
+    std::memcpy(mDepthBuffer + ((mHeight - 1 - y) * mWidth) + x, &depth, sizeof(float));
     return;
 }
-

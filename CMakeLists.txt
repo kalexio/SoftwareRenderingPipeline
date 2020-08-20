@@ -19,6 +19,7 @@ set(SOURCES
     src/mesh.cpp
     src/model.cpp
     src/primitiveAssembler.cpp
+    src/program.cpp
     src/rasterizer.cpp
     src/timer.cpp
     src/triangle.cpp

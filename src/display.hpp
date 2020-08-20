@@ -4,12 +4,12 @@
 
 class Display {
 private:
-    SDL_Window* window;
-    SDL_Surface* surface;
-    const char* title;
-    unsigned int width;
-    unsigned int height;
-    bool quit;
+    SDL_Window* mWindow;
+    SDL_Surface* mSurface;
+    const char* mTitle;
+    unsigned int mWidth;
+    unsigned int mHeight;
+    bool mQuit;
     float mZoom;
 
     bool init();

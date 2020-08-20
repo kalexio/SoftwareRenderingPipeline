@@ -2,17 +2,17 @@
 #include <iostream>
 
 Display::Display(unsigned int width, unsigned int height)
- : window(nullptr), surface(nullptr),
-   title("SoftwareRenderingPipeline"), width(width), height(height),
-   quit(false), mZoom(0.0f)
+ : mWindow(nullptr), mSurface(nullptr),
+   mTitle("SoftwareRenderingPipeline"), mWidth(width), mHeight(height),
+   mQuit(false), mZoom(0.0f)
 {
     init();
 }
 
 Display::~Display()
 {
-    SDL_FreeSurface(surface);
-    SDL_DestroyWindow(window);
+    SDL_FreeSurface(mSurface);
+    SDL_DestroyWindow(mWindow);
     SDL_Quit();
 }
 
@@ -22,12 +22,12 @@ bool Display::init()
         return false;
     }
 
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
-    if (!window) {
+    mWindow = SDL_CreateWindow(mTitle, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_SHOWN);
+    if (!mWindow) {
         return false;
     }
-    surface = SDL_GetWindowSurface(window);
-    if (!surface) {
+    mSurface = SDL_GetWindowSurface(mWindow);
+    if (!mSurface) {
         return false;
     }
 
@@ -38,9 +38,9 @@ bool Display::init()
 
 void Display::swapBuffer(const uint32_t* colorBuffer)
 {
-    SDL_LockSurface(surface);
-    memcpy(surface->pixels, colorBuffer, width * height * 4);
-    SDL_UnlockSurface(surface);
+    SDL_LockSurface(mSurface);
+    memcpy(mSurface->pixels, colorBuffer, mWidth * mHeight * 4);
+    SDL_UnlockSurface(mSurface);
     return;
 }
 
@@ -51,7 +51,7 @@ void Display::handleEvents()
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT: {
-                quit = true;
+                mQuit = true;
                 break;
             }
             case SDL_MOUSEWHEEL: {
@@ -67,7 +67,7 @@ void Display::handleEvents()
             }
             case SDL_KEYDOWN: {
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    quit = true;
+                    mQuit = true;
                     break;
                 }
             }
@@ -77,12 +77,12 @@ void Display::handleEvents()
 
 bool Display::requestClose() const
 {
-    return quit;
+    return mQuit;
 }
 
 void Display::update() const
 {
-    SDL_UpdateWindowSurface(window);
+    SDL_UpdateWindowSurface(mWindow);
 }
 
 float Display::getZoom() const

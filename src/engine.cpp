@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "engine.hpp"
 
 Engine::Engine(const char* modelPath, unsigned int width, unsigned int height)
@@ -23,7 +22,7 @@ void Engine::run()
         mTimer.startRecording();
         mDisplay->update();
         mDisplay->handleEvents();
-        mPipeline->mFramebuffer->setColorBuffer();
+        mPipeline->mFramebuffer->clearFramebuffer();
 
         float zoom = mDisplay->getZoom();
         renderModels(zoom);
@@ -45,4 +44,3 @@ void Engine::renderModels(float zoom)
         mPipeline->render(zoom);
     }
 }
-

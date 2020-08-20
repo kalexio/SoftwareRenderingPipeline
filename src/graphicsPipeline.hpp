@@ -7,6 +7,7 @@
 #include "mesh.hpp"
 #include "framebuffer.hpp"
 #include "camera.hpp"
+#include "program.hpp"
 
 class GraphicsPipeline {
 private:
@@ -15,6 +16,7 @@ private:
     Rasterizer*          mRasterizer;
     Mesh                 mMesh;
     Camera*              mCamera;
+    Program*             mProgram;
 
     void startVertexShader(Vertex* attributes);
     void startPrimitiveAssembler();
@@ -22,12 +24,12 @@ private:
     void startFragmentShader();
 
 public:
+    Framebuffer*         mFramebuffer;
+    FragmentShader*      mFragmentShader;
+    
     GraphicsPipeline(unsigned int width, unsigned int height);
     ~GraphicsPipeline();
 
     void render(float zoom);
     void setMesh(Mesh mesh);
-
-    Framebuffer*         mFramebuffer;
-    FragmentShader*      mFragmentShader;
 };

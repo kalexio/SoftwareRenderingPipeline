@@ -3,7 +3,7 @@
 
 Timer::Timer()
  : mAccumulatedTime(std::chrono::nanoseconds::zero()),
-   frames(0)
+   mFrames(0)
 {
 
 }
@@ -20,7 +20,7 @@ void Timer::startRecording()
 
 void Timer::stopRecording()
 {
-    frames++;
+    mFrames++;
     mPreviousTime = mCurrentTime;
     mCurrentTime = mTimer.now();
     mAccumulatedTime += mCurrentTime - mPreviousTime;
@@ -30,8 +30,8 @@ void Timer::getFPS()
 {
     std::chrono::milliseconds oneSecond(1000);
     if (mAccumulatedTime >= oneSecond) {
-        std::cout << "fps: " << frames << '\n';
-        frames = 0;
+        std::cout << "fps: " << mFrames << '\n';
+        mFrames = 0;
         mAccumulatedTime = std::chrono::nanoseconds::zero();
     }
 }

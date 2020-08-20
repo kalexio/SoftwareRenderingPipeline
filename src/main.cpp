@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "engine.hpp"
 
 const char* MODEL_PATH = "../obj/monkey_smooth.obj";
