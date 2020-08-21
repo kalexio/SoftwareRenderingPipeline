@@ -23,7 +23,7 @@ $ make
 $ ./SoftwareRenderingPipeline
 ```
 
-## References Litterature
+## References Literature
 * [Scratch A Pixel](https://www.scratchapixel.com/)
 * [Tiny Renderer](https://github.com/ssloy/tinyrenderer/wiki)
 * [Learn OpenGL](https://learnopengl.com/)

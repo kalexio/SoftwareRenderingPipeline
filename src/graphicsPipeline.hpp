@@ -18,9 +18,9 @@ private:
     Camera*              mCamera;
     Program*             mProgram;
 
-    void startVertexShader(Vertex* attributes);
+    void startVertexShader();
     void startPrimitiveAssembler();
-    void startRasterizer(Vertex* attributes, glm::vec3* attrPos);
+    void startRasterizer();
     void startFragmentShader();
 
 public:

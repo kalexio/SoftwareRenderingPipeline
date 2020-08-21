@@ -25,7 +25,6 @@ void Rasterizer::compute(Framebuffer* framebuffer, FragmentShader* fragmentShade
 
     computeAABB(varyings);
     barycentric(framebuffer, fragmentShader, varyings);
-
 }
 
 void Rasterizer::computeAABB(varyings_t* varyings)

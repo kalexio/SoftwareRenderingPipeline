@@ -29,22 +29,18 @@ GraphicsPipeline::~GraphicsPipeline()
 void GraphicsPipeline::render(float zoom)
 {
     //uint64_t startCycleCount = _rdtsc();
-
-    unsigned int numFaces = mMesh.getFacesCount();
-    Vertex attributes[3];
-    glm::vec3 attrPos[3];
-
     mCamera->setZoom(zoom);
 
     //mProgram->attachVertexShader(mVertexShader);
 
+    unsigned int numFaces = mMesh.getFacesCount();
     for (unsigned int i = 0; i < numFaces; ++i) {
         for (unsigned int j = 0; j < 3; ++j) {
             mProgram->setAttributes(mMesh.getVertexAt(i * 3 + j), j);
         }
-        startVertexShader(attributes);
+        startVertexShader();
         startPrimitiveAssembler();
-        startRasterizer(attributes, attrPos);
+        startRasterizer();
         startFragmentShader();
     }
 
@@ -53,7 +49,7 @@ void GraphicsPipeline::render(float zoom)
     //std::cout << "Barycentric cycles: " << elapsedCycleCount << '\n';
 }
 
-void GraphicsPipeline::startVertexShader(Vertex* attributes)
+void GraphicsPipeline::startVertexShader()
 {
     glm::mat4 model = mCamera->getModelMatrix();
     glm::mat4 view = mCamera->getViewMatrix();
@@ -71,7 +67,7 @@ void GraphicsPipeline::startPrimitiveAssembler()
     return;
 }
 
-void GraphicsPipeline::startRasterizer(Vertex* attributes, glm::vec3* attrPos)
+void GraphicsPipeline::startRasterizer()
 {
     mRasterizer->compute(mFramebuffer, mFragmentShader, mProgram->varyings);
 }
