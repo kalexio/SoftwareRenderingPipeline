@@ -20,9 +20,8 @@ void Engine::run()
 {
     while(!mDisplay->requestClose()) {
         mTimer.startRecording();
-        mDisplay->update();
-        mDisplay->handleEvents();
         mPipeline->mFramebuffer->clearFramebuffer();
+        mDisplay->update();
 
         float zoom = mDisplay->getZoom();
         renderModels(zoom);
@@ -30,6 +29,8 @@ void Engine::run()
         mDisplay->swapBuffer(mPipeline->mFramebuffer->getColorBuffer());
         mTimer.stopRecording();
         mTimer.getFPS();
+
+        mDisplay->handleEvents();
     }
 }
 
